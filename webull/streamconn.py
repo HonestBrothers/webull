@@ -3,6 +3,9 @@ import threading
 import json
 import time
 import os
+import ssl
+from pytz import timezone
+from datetime import datetime
 from . import webull
 
 class StreamConn :
@@ -146,7 +149,7 @@ class StreamConn :
                 self.client_order_upd.on_connect = on_connect
                 self.client_order_upd.on_subscribe = on_subscribe
                 self.client_order_upd.on_message = on_order_message
-                self.client_order_upd.tls_set_context()
+                self.client_order_upd.tls_set_context(ssl.create_default_context())
                 # this is a default password that they use in the app
                 self.client_order_upd.username_pw_set('test', password='test')
                 self.client_order_upd.connect('wspush.webullbroker.com', 443, 30)
@@ -161,7 +164,7 @@ class StreamConn :
             self.client_streaming_quotes.on_subscribe = on_subscribe
             self.client_streaming_quotes.on_unsubscribe = on_unsubscribe
             self.client_streaming_quotes.on_message = on_price_message
-            self.client_streaming_quotes.tls_set_context()
+            self.client_streaming_quotes.tls_set_context(ssl.create_default_context())
             #this is a default password that they use in the app
             self.client_streaming_quotes.username_pw_set('test', password='test')
             self.client_streaming_quotes.connect('wspush.webullbroker.com', 443, 30)
